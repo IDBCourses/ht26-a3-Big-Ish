@@ -28,9 +28,65 @@ import { createShape } from "./shape.js";
 // For example: which notes you can play, how fast things move, the tempo.
 const note = "C4"; // the note played when the pointer goes down
 
+// Creating basic shapes from the object
+const shape1 = createShape();
+const shape2 = createShape();
+const shape3 = createShape();
+const shape4 = createShape();
+const shape5 = createShape();
+
+// Carving the shapes
+function testShape() {
+  shape1.setPosition(0.5, 0.2);
+  shape1.setSize(50);
+  shape1.setColour(255, 100, 25, 0.75);
+
+  shape2.setPosition(0.5, 0.35);
+  shape2.setSize(50);
+  shape2.setRoundedness(0.4);
+
+  shape3.setPosition(0.5, 0.5);
+  shape3.setSize(50);
+  shape3.setColour(255, 100, 25, 0.75);
+  shape3.setRoundedness(0.2);
+  shape3.setRotation(45);
+
+  shape4.setPosition(0.5, 0.65);
+  shape4.setSize(50);
+  shape4.setRoundedness(0.4);
+
+  shape5.setPosition(0.5, 0.8);
+  shape5.setSize(50);
+  shape1.setColour(255, 100, 25, 0.75);
+}
+
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: where the pointer is, how fast it's moving, or whether a drone is on.
+
+function pointerEnter(event) {}
+
+function pointerLeave(event) {}
+
+// Rotates the squares
+function testRotation() {
+  shape2.setRotation(shape2.rotation - 25);
+  shape3.setRotation(shape3.rotation + 25);
+  shape4.setRotation(shape4.rotation - 25);
+}
+
+// Changes size of the circles randomly
+function testcircleSize() {
+  let size = 50 - Math.random() * (55 - 65);
+  shape1.setSize(size);
+  shape5.setSize(size);
+}
+
+// Changes the background color
+function testBackgroundColor() {
+  let hue = Math.random() * 360;
+  document.body.style.backgroundColor = `hsl(${hue}, 100%, 50%, 0.5)`;
+}
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
@@ -64,11 +120,12 @@ function setup() {
   use(); // start the use loop
 
   // Example: a shape near the middle of the window. Replace it with your own.
-  const example = createShape("example");
-  example.setPosition(0.5, 0.5);
-
+  testShape();
   // Put your event listener code here
   window.addEventListener("pointerdown", pointerDown);
+  window.addEventListener("pointerdown", testRotation);
+  window.addEventListener("pointerdown", testcircleSize);
+  window.addEventListener("pointerdown", testBackgroundColor);
 }
 
 setup(); // Always remember to call setup()!

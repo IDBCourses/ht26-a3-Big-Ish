@@ -25,46 +25,50 @@ import { createShape } from "./shape.js";
 
 // ---------- Settings ----------
 // Settings variables should contain all of the "fixed" parts of your programs
-// For example: which notes you can play, how fast things move, the tempo.
+// For example: which notes you can play, how fast things move, the tempo.0
+// Default background color:
+document.body.style.backgroundColor = "hsl(41, 22%, 83%)";
 
-document.body.style.backgroundColor = "hsl(43, 27%, 90%)"; // Sets the default background color
-let hue3 = Math.random() * 360; // Randomizing the hue for shape 3
+// Randomizing the hue for shape 3
+let hue3 = Math.random() * 360;
 
-// the note played when the pointer goes down
-let synthNotes = ["C4", "D4", "E4", "G4", "A4"];
-let bassNotes = ["C3", "A2", "F2", "G2"];
+let windowX = 0; // Initalising X value for pointer so that it can be accessed everwhere
+let windowY = 0; // Initialisngf Y value for pointer
 
-// Creating basic shapes from the object
-const bassShape = createShape();
-const highShape = createShape();
-const eyeLeft = createShape();
-const eyeRight = createShape();
-const mouthShape = createShape();
+// Bass and Synth melodies:
+let bassNotes = "C3"; //["C4", "D4", "E4", "G4", "A4"];
+let highNotes = "E4"; //["C3", "A2", "F2", "G2"];
 
-// Carving the shapes for the face
+// Initializing the object and carving the shapes for the face:
+let bassShape = createShape();
+let highShape = createShape();
+let eyeLeft = createShape();
+let eyeRight = createShape();
+let mouthShape = createShape();
+
 function duetShape() {
-  bassShape.setSize(200, 200);
-  bassShape.setPosition(0.3, 0.45);
-  bassShape.setRoundedness(0.15);
+  bassShape.setSize(180, 180);
+  bassShape.setPosition(0.35, 0.47);
+  bassShape.setRoundedness(0.25);
   bassShape.setColour(25, 85, 55);
 
-  highShape.setSize(150, 350);
-  highShape.setPosition(0.55, 0.3);
+  highShape.setSize(150, 300);
+  highShape.setPosition(0.55, 0.35);
   highShape.setRoundedness(0.2);
   highShape.setColour(263, 60, 77);
 
   eyeLeft.setSize(40);
-  eyeLeft.setPosition(0.4, 0.5);
+  eyeLeft.setPosition(0.42, 0.52);
   eyeLeft.setRoundedness(1);
   eyeLeft.setColour(225, 65, 15);
 
   eyeRight.setSize(40);
-  eyeRight.setPosition(0.62, 0.5);
+  eyeRight.setPosition(0.62, 0.52);
   eyeRight.setColour(225, 65, 15);
   eyeRight.setRoundedness(1);
 
   mouthShape.setSize(60, 20);
-  mouthShape.setPosition(0.51, 0.6);
+  mouthShape.setPosition(0.52, 0.6);
   mouthShape.setColour(225, 65, 15);
   mouthShape.setRoundedness(0.4);
 }
@@ -73,16 +77,28 @@ function duetShape() {
 // State variables are the parts of your program that change over time.
 // For example: where the pointer is, how fast it's moving, or whether a drone is on.
 
+// -Old-  Keep for now incase we want to use it later:
 let isHoveringShape3 = false;
-let synthIndex = 0;
 let bassIndex = 0;
+let synthIndex = 0;
 
-// Initiating Pointer and storing its position
+// Initiating Pointer and storing its position:
 let pointerX = 0;
 let pointerY = 0;
 let time = 0;
+let distanceTravelled = 0;
 
-// Changes the background color
+// Remember the last pointer position:
+let lastX = null;
+let lastY = null;
+let lastTime = null;
+
+// Bass and High energy:
+let bassEnergy = 0;
+let highEnergy = 0;
+let audioStart = false; // Audio only starts when pressed
+
+// - OLD-   Changes the background color, keep for now incase:
 function testBackgroundColor() {
   let backgroundHue = Math.random() * 360;
   document.body.style.backgroundColor = `hsl(${backgroundHue}, 100%, 25%, 0.3)`;
@@ -106,19 +122,31 @@ function testcircleSize() {
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
-const graphicSynth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
-const bassSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+let bassSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+let highSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+bassSynth.volume.value = -1000; // Default value to mute
+highSynth.volume.value = -1000;
 
 // ---------- Update ----------
 // Update the state. This is called every 100ms.
 function update() {
   setTimeout(update, 100); // call update() again in 100 milliseconds
-}
 
+  // Adjusting energy realtive to pointer movement:
+  bassEnergy -= 25;
+  highEnergy -= 25;
+
+  if (bassEnergy < 0) {
+    bassEnergy = 0;
+  }
+  if (highEnergy < 0) {
+    highEnergy = 0;
+  }
+}
 // ---------- Use ----------
 // Use the state to make sound and move shapes. This is called every 100ms.
 function use() {
-  setTimeout(use, 100); // call use() again in 100 milliseconds
+  setTimeout(use, 50); // call use() again in 100 milliseconds
 
   /*  if (isHoveringShape3 === true) {
     shape2.setRotation(shape2.rotation - 25);
@@ -126,6 +154,23 @@ function use() {
     shape4.setRotation(shape4.rotation - 25);
     testcircleSize();
   }*/
+  // Adusting shape sizes according to the energy:
+  let width = 180 + bassEnergy / 10; // 0 energy, 180 pixels || 500 energy, 230 pixels || 1000 energy, 280 pixels
+  let height = 300 + highEnergy / 10;
+  bassShape.setSize(width, width);
+  highShape.setSize(150, height);
+
+  // Adjusting volume according to energy:
+  if (bassEnergy <= 0) {
+    bassSynth.volume.value = -1000;
+  } else {
+    bassSynth.volume.value = -60 + (bassEnergy / 1000) * 48; // 0 energy, silence || 250 energy, -48db || 500 energy, -36db || 1000 energy, -12db
+  }
+  if (highEnergy <= 0) {
+    highSynth.volume.value = -1000;
+  } else {
+    highSynth.volume.value = -60 + (highEnergy / 1000) * 48;
+  }
 }
 
 // ---------- Controls (Event Handlers) ----------
@@ -141,36 +186,90 @@ async function pointerDown(event) {
   if (bassKey == bassNotes.length) {
     bassKey = 0;
   }*/
+  if (windowX < 500) {
+    //bassSynth.triggerAttackRelease(bassNotes, "8n");
+  }
+  if (windowX > 500) {
+    //highSynth.triggerAttackRelease(highNotes, "8n");
+  }
+  // Play audio after press
+  if (audioStart == false) {
+    console.log("Starting audio");
+    bassSynth.triggerAttack(bassNotes);
+    highSynth.triggerAttack(highNotes);
+    audioStart = true;
+  }
 }
 
 function pointerUp() {}
 
 function pointerMove(event) {
+  // Real time pointer position
   pointerX = event.clientX;
   pointerY = event.clientY;
   time = event.timeStamp;
 
-  console.log("\n--------------");
-  console.log(
-    `Pointer X: ${Math.floor(pointerX)}\nPointer Y: ${Math.floor(pointerY)}`,
-  );
+  // Pointer postion and calculation relative to the window
+  //console.log("\n------------\n");
+  windowX = Math.floor((pointerX / window.innerWidth) * 1000);
+  windowY = Math.floor((pointerY / window.innerHeight) * 1000);
+
+  // Calculate distance between pointers:
+  // Making sure the inital position exits before calculating:
+  if (lastX != null && lastY != null) {
+    distanceTravelled = Math.hypot(pointerX - lastX, pointerY - lastY); // Math.hypot(dx, dy) gives the straight-line distance between two points
+    //console.log(`Distance travelled: ${Math.ceil(distanceTravelled)}`); // Math.ceil because we want to incluce micro movements
+  }
+
+  //console.log(`Pointer X: ${Math.floor(pointerX)}\nPointer Y: ${Math.floor(pointerY)}`);
   console.log(`TimeStamp: ${Math.floor(time / 1000)}(s)\n`);
 
-  let windowX = Math.floor((pointerX / window.innerWidth) * 1000);
-  let windowY = Math.floor((pointerY / window.innerHeight) * 1000);
-  console.log("Window X: " + windowX);
-  console.log("Window Y: " + windowY);
-  console.log("--------------\n");
-}
+  lastX = pointerX;
+  lastY = pointerY;
 
+  // Calculating energy relative to where the pointer is:
+  if (windowX < 500 && windowY < 500) {
+    console.log("Top Left");
+    bassEnergy += distanceTravelled;
+    //bassSynth.triggerAttackRelease(bassNotes, "8n");
+    //console.log("Bass Energy: " + bassEnergy);
+    //console.log("High Energy: " + highEnergy);
+  } else if (windowX > 500 && windowY < 500) {
+    //console.log("Top Right");
+    highEnergy += distanceTravelled;
+    //highSynth.triggerAttackRelease(highNotes, "8n");
+    //console.log("Bass Energy: " + bassEnergy);
+    //console.log("High Energy: " + highEnergy);
+  } else if (windowX < 500 && windowY > 500) {
+    console.log("Bottom Left");
+    bassEnergy += distanceTravelled;
+    //highSynth.triggerAttackRelease(highNotes, "8n");
+    //console.log("Bass Energy: " + bassEnergy);
+    //console.log("High Energy: " + highEnergy);
+  } else if (windowX > 500 && windowY > 500) {
+    console.log("Bottom Right");
+    highEnergy += distanceTravelled;
+    //highSynth.triggerAttackRelease(highNotes, "8n");
+    //console.log("Bass Energy: " + bassEnergy);
+    //console.log("High Energy: " + highEnergy);
+  }
+
+  // Adjusting energy realtive to pointer movement:
+  if (bassEnergy > 1000) {
+    bassEnergy = 1000;
+  }
+  if (highEnergy > 1000) {
+    highEnergy = 1000;
+  }
+}
 // ---------- Setup ----------
 // Setup is run once, at the start of the program. It sets everything up for us!
 function setup() {
+  duetShape(); // Calls the base shape first before updating it with energy:
   update(); // start the update loop
   use(); // start the use loop
 
   // Example: a shape near the middle of the window. Replace it with your own.
-  duetShape();
 
   // Put your event listener code here
 

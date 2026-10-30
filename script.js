@@ -33,8 +33,8 @@ let windowX = 0; // Initalising X value for pointer so that it can be accessed e
 let windowY = 0; // Initialisngf Y value for pointer
 
 // Bass and Synth melodies:
-let bassNotes = ["C2", "D2", "E2"];
-let highNotes = ["D4", "E4", "F4"];
+let bassNotes = ["C3"];
+let highNotes = ["D4"];
 
 // Initializing the object and carving the shapes for the face:
 
@@ -147,12 +147,12 @@ function use() {
   if (bassEnergy <= 0) {
     bassSynth.volume.value = -1000;
   } else {
-    bassSynth.volume.value = -60 + (bassEnergy / 1000) * 48; // 0 energy, silence || 250 energy, -48db || 500 energy, -36db || 1000 energy, -12db
+    bassSynth.volume.value = -50 + (bassEnergy / 1000) * 48; // 0 energy, silence || 250 energy, -48db || 500 energy, -36db || 1000 energy, -12db
   }
   if (highEnergy <= 0) {
     highSynth.volume.value = -1000;
   } else {
-    highSynth.volume.value = -60 + (highEnergy / 1000) * 48;
+    highSynth.volume.value = -50 + (highEnergy / 1000) * 48;
   }
 }
 
@@ -172,13 +172,13 @@ async function pointerDown(event) {
   let i = 0;
   if (windowX < 500) {
     for (i = 0; i < bassNotes.length; i++) {
-      bassSynth.triggerAttackRelease(bassNotes[i], "8n", i * 0.75);
-      highSynth.triggerAttackRelease(highNotes[i], "8n", i * 0.75);
+      bassSynth.triggerAttack(bassNotes[i]);
+      highSynth.triggerAttack(highNotes[i]);
     }
   } else {
     for (i = 0; i < highNotes.length; i++) {
-      bassSynth.triggerAttackRelease(bassNotes[i], "8n", i * 0.75);
-      highSynth.triggerAttackRelease(highNotes[i], "8n", i * 0.75);
+      bassSynth.triggerAttackRelease(bassNotes[i]);
+      highSynth.triggerAttackRelease(highNotes[i]);
     }
   }
 }

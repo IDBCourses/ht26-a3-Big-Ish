@@ -163,24 +163,12 @@ async function pointerDown(event) {
   await Tone.start(); // Await is a property of Async
   console.log("Pointer down at", event.clientX, event.clientY);
 
-  if (audioStart) {
+  /*if (audioStart) {
     return;
   }
   console.log("Starting audio");
   audioStart = true;
-
-  let i = 0;
-  if (windowX < 500) {
-    for (i = 0; i < bassNotes.length; i++) {
-      bassSynth.triggerAttack(bassNotes[i]);
-      highSynth.triggerAttack(highNotes[i]);
-    }
-  } else {
-    for (i = 0; i < highNotes.length; i++) {
-      bassSynth.triggerAttackRelease(bassNotes[i]);
-      highSynth.triggerAttackRelease(highNotes[i]);
-    }
-  }
+  */
 }
 
 // Play audio after press
@@ -247,6 +235,18 @@ function pointerMove(event) {
   }
   if (highEnergy > 1000) {
     highEnergy = 1000;
+  }
+  let i = 0;
+  if (windowX < 500) {
+    for (i = 0; i < bassNotes.length; i++) {
+      bassSynth.triggerAttack(bassNotes[i]);
+      highSynth.triggerAttack(highNotes[i]);
+    }
+  } else {
+    for (i = 0; i < highNotes.length; i++) {
+      bassSynth.triggerAttackRelease(bassNotes[i]);
+      highSynth.triggerAttackRelease(highNotes[i]);
+    }
   }
 }
 // ---------- Setup ----------

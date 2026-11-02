@@ -305,7 +305,7 @@ async function pointerDown(event) {
   if (audioStart == true) {
     // Syncing and resetting audio and timing:
     nextBass = Tone.now();
-    nextLoop = Tone.now();
+    nextHigh = Tone.now();
     bassIndex = 0;
     highIndex = 0;
   } else {

@@ -96,20 +96,20 @@ function duetShape() {
   });
 
   outsideOutline.setSize(650);
-  outsideOutline.setPosition(0.25, 0.19);
+  outsideOutline.setPosition(0.2839, 0.2733);
   outsideOutline.setColour(200, 50, 35, 0.5);
 
   insideOutline.setSize(525);
-  insideOutline.setPosition(0.285, 0.25);
+  insideOutline.setPosition(0.3116, 0.318);
   insideOutline.setColour(12, 60, 82, 1);
 
   bassShape.setSize(300, 180);
-  bassShape.setPosition(0.325, 0.45);
+  bassShape.setPosition(0.3433, 0.4668);
   bassShape.setRoundedness(0.25);
   bassShape.setColour(12, 100, 60, 0.75);
 
   highShape.setSize(150, 300);
-  highShape.setPosition(0.42, 0.35);
+  highShape.setPosition(0.4185, 0.3924);
   highShape.setRoundedness(0.2);
   highShape.setColour(200, 100, 35, 0.75);
 
@@ -119,8 +119,8 @@ function duetShape() {
     eye.setRoundedness(1);
   });
 
-  eyeLeft.setPosition(0.43, 0.5);
-  eyeRight.setPosition(0.6, 0.5);
+  eyeLeft.setPosition(0.4264, 0.504);
+  eyeRight.setPosition(0.5611, 0.504);
 
   eyeBling.forEach(function (bling) {
     bling.setSize(0);
@@ -128,11 +128,11 @@ function duetShape() {
     bling.setColour(0, 0, 95, 1);
   });
 
-  eyeLeftBling.setPosition(0.455, 0.51);
-  eyeRightBling.setPosition(0.625, 0.51);
+  eyeLeftBling.setPosition(0.4462, 0.5114);
+  eyeRightBling.setPosition(0.5809, 0.5114);
 
   mouthShape.setSize(75, 10);
-  mouthShape.setPosition(0.53, 0.58);
+  mouthShape.setPosition(0.5056, 0.5635);
   mouthShape.setColour(220, 25, 15, 1);
   mouthShape.setRoundedness(0.4);
 }

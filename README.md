@@ -1,188 +1,77 @@
-# My instrument
+# DUET
 
 **Play it here:** https://idbcourses.github.io/ht26-a3-Big-Ish/
 
-**Name:** Ishkanda Mishra -AS7432-
+**Name:** Ishkanda Mishra
 
-<!-- One or two sentences: what kind of instrument is it, and what is it like to play? -->
+**MAU ID:** AS7432
+
+DUET is a mouse controlled musical creature. Movement on the left introduces bass progression, while movement on the right introduces a melody. By alternating between the two sides, you can bring the voices together and make the creature react!
 
 ## How to play
 
-<!-- Fill in the table with a row for everything the player can do with the pointer: clicking, moving slowly or fast, moving in circles, holding still... Say what happens to the sound and to the shapes. If you added keys, give them rows too. -->
+Open the instrument in a large desktop browser window. Click once to enable audio, then move your mouse or trackpad to build energy. The creature will be inanimate until you start moving.
 
-| When you...  | The sound...                         | The shapes... |
-| ------------ | ------------------------------------ | ------------- |
-| Click or tap | Plays a C4 (the example: replace it) | Nothing yet   |
-|              |                                      |               |
+The controls use the left and right halves of the **whole window**. You can move anywhere within either half; you do not need to hover over or click the creature itself.
 
-<!-- Anything else a player needs to know: how to get started, a good thing to try first. -->
+| When you...                   | The sound...                                                           | The creature...                                                                                 |
+| ----------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Click or tap to turn on audio | Starts the bass and melody from the beginning.                         | Continues responding to movement.                                                               |
+| Move on the left half         | Builds bass energy and brings the low chords into the mix.             | The bass body and inner outline grow and the inner outline rotates.                             |
+| Move on the right half        | Builds high energy and brings the melody into the mix.                 | The high body and outer outline grow and the outer outline rotates.                             |
+| Alternate between both halves | Lets the two voices overlap as their separate energies build and fade. | Both parts of the creature become active. The eyes, highlights and mouth respond to the energy. |
+| Hold the pointer still        | Gradually fades into silence as energy drains.                         | Gradually shrinks toward its resting sizes, and the outlines slow down.                         |
+| Click or tap again            | Toggles the audio on or off                                            | The creature still responds to mouse movement, even with the audio turned off.                  |
 
----
+A useful first gesture is to build the chords on the left, sweep across to reveal the melody, then alternate sides to blend them. There are no keyboard controls.
 
-## About this assignment
+## Background colour
 
-**A3: Functional Prototype.** An individual assignment. You build a musical instrument with Tone.js, played with the **pointer** (mouse, trackpad, touch or pen), with shapes on the page that respond to how you play. The full brief, the due date and the assessment criteria are on Canvas. The A2 oral exam examines this code, so make sure you understand every part of it.
+The background responds to the combined energy from both sides. Above 400, it starts choosing random colours. More energy shortens the interval between changes, reaching about 0.65 seconds at maximum energy. When the combined energy falls to 400 or below, the background returns to its resting red.
 
-### The brief, in short
+## The music
 
-- **The pointer shapes the sound.** Use `PointerEvent`s (`pointermove`, `pointerdown`, `pointerup` ...) so the pointer's position and movement continuously change the sound: pitch, volume, a filter, tempo, density ...
-- **Visual elements are required.** Shapes on the page must respond to the pointer's movement over time, not only to where it is right now. A keyboard layer is optional and doesn't replace the visuals.
-- **Process data over time.** "Pointer X sets the pitch" on its own isn't enough. Use something worked out across many events: speed, direction, distance travelled, or a history of positions.
-- **Structure:** use the settings/state and setup/update/use patterns. `script.js` is already set up this way.
-- **Readable code:** comments, consistent indentation, and this README filled in.
-- **Allowed:** vanilla JavaScript, Tone.js and `shape.js`. **Not allowed:** other libraries, and CSS transitions or animations. Anything that moves is moved by your JavaScript.
+The approximately eight-second loop has two parts:
 
-Your code must include, at a minimum:
+- **Low voice:** Four chords, changing every two seconds.
+- **High voice:** A 32-note melody, progressing every quarter second.
 
-1. An object **or** an array
-2. A `for` loop **or** a `while` loop **or** a functional equivalent (e.g. `forEach()`)
-3. A constant variable
-4. An event handler
+Both voices use Tone.js `PolySynth` instruments. Each chord is an array of notes played together; the melody plays one note at a time, while the bass plays four at a time.
 
-### Hand in
+## Translating pointer movement to energy
 
-On Canvas:
+The program measures the distance between pointer positions. It skips the first distance calculation until a previous position exists, preventing a false initial burst.
 
-- **Code:** a `.zip` of `main` (on GitHub: **Code → Download ZIP**), and the link to your live page in the submission comment. The link also goes at the top of this README.
-- **Reflection:** a `.pdf` of about 250 words on one moment when your code "talked back". See the brief on Canvas.
+Movement adds energy to the corresponding side. Each energy value is capped at 1000 and decreases over time, so earlier movement continues to affect the sound and visuals after the pointer stops. Both eyes and their highlights respond to the combined energy; the mouth responds to both voices.
 
-Having your code on GitHub doesn't count as handing it in. Upload it on Canvas too.
+The code uses the settings/state and setup/update/use structure:
 
----
+- `setup()` initializes the creature, starts the repeating updates and registers the pointer handlers.
+- `pointerMove()` measures movement and builds energy.
+- `pointerDown()` toggles playback and resets the musical sequence when starting.
+- `update()` drains the stored energy.
+- `use()` applies energy to the shapes and volumes, and calls `playAudio()` and `changeBG()`.
+- `playAudio()` checks the note timings, plays the next chord or melody note, and advances the indexes.
+- `changeBG()` uses the combined energy to choose the background colour and the interval before the next change. `bgTime` stores the target time for that next change.
 
-## What's in the template
+Both `update()` and `use()` repeat approximately every 25 milliseconds. Musical notes use separate timings, so that refresh interval is not the spacing between notes.
 
-| File         | What goes in it                                                                                                             |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `script.js`  | All of your code: settings, state, the sound, `update()`, `use()`, the controls and `setup()`                               |
-| `shape.js`   | Ready-made code for shapes on the page. Use `createShape()` and its methods (see below). You don't need to change this file |
-| `index.html` | The page. Loads Tone.js and `script.js`                                                                                     |
-| `style.css`  | How the page and the shapes look                                                                                            |
+## Files
 
-`script.js` starts with:
+| File         | Purpose                                                                                      |
+| ------------ | -------------------------------------------------------------------------------------------- |
+| `script.js`  | Instrument settings, note arrays, energy, pointer controls, audio timing and visual changes. |
+| `shape.js`   | Supplied shape objects and methods for changing their appearance.                            |
+| `style.css`  | Base page and shape styling.                                                                 |
+| `index.html` | Loads the stylesheet, Tone.js and the instrument script.                                     |
 
-- A `PolySynth` connected to the speakers, ready to play.
-- `update()` and `use()`, which each run every 100 milliseconds. Change the state in `update()`, and use it to make sound and move shapes in `use()`.
-- A `note` constant in the settings, and a `pointerDown()` handler that plays it every time you click, tap or touch the page. It also starts Tone.js, because browsers only allow sound after the player has done something.
-- One example shape near the middle of the window. Replace it with your own.
+The project uses vanilla JavaScript, HTML, CSS, Tone.js and the supplied `shape.js`.
 
-Playing a note on `pointerdown` is only a starting point. Making the pointer's movement over time shape the sound and the shapes is the assignment.
+## Layout limitation
 
-### Run it
+The prototype is designed for a mouse or trackpad in a large desktop window. Shape positions are calculated from the window dimensions when the page loads, while their sizes use pixel values. The layout does not automatically adjust after resizing. Choose the window size before loading, and refresh after changing it.
 
-1. Open `index.html`, then run **Live Preview: Show Preview (External Browser)** from the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`).
-2. Open the browser's developer tools (`F12`, or `Cmd+Option+I` on a Mac) and click the **Console** tab.
-3. You should see a pink circle in the middle of the page. Click anywhere on the page. You should hear a note, and see `Pointer down at` and the pointer's position in the console.
+## References
 
-### The live page
-
-Every time something is merged into `main`, GitHub publishes it at the link at the top of this README. It takes a minute or two. To find the link: on github.com, go to **Settings → Pages**. The program has to run without errors there too, not just on your computer.
-
----
-
-## shape.js
-
-`shape.js` puts shapes on the page and lets you change them from your code. Import what you need at the top of `script.js`:
-
-```js
-import { createShape } from "./shape.js";
-```
-
-A new shape is a 100 × 100 pink circle (the `.shape` rule in `style.css`), placed at the top-left of the window until you move it.
-
-### `createShape(id, className)`
-
-Makes a new shape, adds it to the page, and returns it.
-
-| Parameter   | Default   | What it is                                                                                                                                                  |
-| ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`        | `null`    | Optional. An id for the element, so you can style it with `#id` in `style.css`. If another element already has that id, `-1`, `-2` ... is added to the end. |
-| `className` | `"shape"` | The CSS class (or several, separated by spaces). If you change it, the shape loses the `.shape` look unless you include `shape`.                            |
-
-```js
-const dot = createShape("dot");
-```
-
-### Methods
-
-Every method changes the shape on the page and stores the new value on the shape. Each one returns the shape, so you can chain them:
-
-```js
-dot.setPosition(0.25, 0.5).setSize(40).setColour(200);
-```
-
-| Method                                         | What it does                                                                                                                                                                                   |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `setPosition(x, y)`                            | Moves the shape. `x` and `y` go from `0` to `1` across the window: `(0, 0)` is the top-left, `(1, 1)` the bottom-right.                                                                        |
-| `setPositionPixels(x, y)`                      | Moves the shape, in pixels from the top-left of the window. Handy with a pointer event's `clientX` and `clientY`.                                                                              |
-| `setSize(size)`                                | Makes the shape a square (or circle) `size` pixels across.                                                                                                                                     |
-| `setSize(width, height)`                       | Sets the width and height separately, in pixels.                                                                                                                                               |
-| `setColour(hue, saturation, lightness, alpha)` | Sets the colour in HSL. `hue` is 0–360 (0 red, 120 green, 240 blue). `saturation` and `lightness` are percentages, 0–100 (defaults `100` and `50`). `alpha` is the opacity, 0–1 (default `1`). |
-| `setRotation(degrees)`                         | Turns the shape, in degrees.                                                                                                                                                                   |
-| `setRoundedness(amount)`                       | How round the corners are, from `0` (square corners) to `1`. From `0.5` up, a square is a full circle.                                                                                         |
-| `setClass(className)`                          | Replaces the shape's CSS classes. Include `shape` to keep the default look.                                                                                                                    |
-| `setID(id)`                                    | Changes the element's id. As with `createShape()`, a number is added if the id is taken.                                                                                                       |
-
-Good to know:
-
-- The position is the shape's **top-left corner**, not its centre. To centre a shape on a point, subtract half its width and height.
-- The colour, size, rotation and roundedness set by the methods override what's in `style.css`.
-- To remove a shape from the page: `dot.element.remove()`.
-
-### Properties
-
-You can read these to find out where a shape is and how it looks:
-
-| Property                                    | What it holds           |
-| ------------------------------------------- | ----------------------- |
-| `x`, `y`                                    | Position in pixels      |
-| `width`, `height`                           | Size in pixels          |
-| `hue`, `saturation`, `lightness`, `opacity` | The colour              |
-| `rotation`                                  | Rotation in degrees     |
-| `roundedness`                               | Roundedness, 0–1        |
-| `element`                                   | The `<div>` on the page |
-
-```js
-dot.setPositionPixels(dot.x + 5, dot.y); // move 5 pixels to the right
-```
-
-Change a shape with its methods, not by setting the properties: `dot.x = 100` changes the number but doesn't move the shape.
-
-A new shape's properties don't come from `style.css`. Until you call a method, they hold starting values (`x` and `y` are the middle of the window, `hue` is `0`, `roundedness` is `0`, `width` and `height` are `100`) that may not match what you see.
-
----
-
-## Working with Git
-
-This is your own repo, so you don't need anyone to review your work. **`main` must always run**, because it's what you hand in and what the live page shows.
-
-For small changes, commit straight to `main`. Commit small and often, with a message that says what changed, and push at least at the end of every session. Your commit history also helps you in the A2 oral exam.
-
-For a **larger feature**, use a branch:
-
-1. **Make a branch.** Click the branch name in the bottom-left corner of VS Code → **Create new branch…**. Name it after the feature: `pointer-speed`, `trail`, `filter-sweep`.
-2. **Commit and push** to the branch. The first time, click **Publish Branch**.
-3. **Open a pull request** on github.com (GitHub shows a **Compare & pull request** button after you push). Fill in _What changed_, _How to test it_ and _Anything you're unsure about_. It's a record of what you did and why.
-4. **Merge it** yourself: **Merge pull request**, then **Delete branch**.
-5. In VS Code, switch back to `main` and click **Sync Changes** (or **Pull**).
-
-### When you get a conflict
-
-A conflict means `main` and your branch changed the same lines, and Git can't tell which version to keep. It's normal, and nothing is lost. You decide.
-
-1. The Source Control panel lists the conflicting files under **Merge Changes**. Open one.
-2. Each conflict shows two versions: **Current** (the branch you're on) and **Incoming** (the one you're merging in). Above each one, click **Accept Current Change**, **Accept Incoming Change** or **Accept Both Changes**. Or edit the lines by hand until they're right.
-3. Make sure no `<<<<<<<`, `=======` or `>>>>>>>` lines are left in the file.
-4. Save, then click **+** next to the file to stage it.
-5. When every file is done, click **Commit**, then push.
-6. **Run the code.** A conflict you've resolved can still break the program.
-
-If you're stuck, stop and ask a TA or teacher. Don't delete the folder and clone again, and don't force anything.
-
----
-
-## Resources
-
-- [Tone.js documentation](https://tonejs.github.io/docs/15.1.22/)
-- [`PointerEvent` on MDN](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
-- [`KeyboardEvent` on MDN](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent)
+- [Tone.js 15.1.22 documentation](https://tonejs.github.io/docs/15.1.22/)
+- [PointerEvent documentation](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)

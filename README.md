@@ -6,15 +6,15 @@
 
 **MAU ID:** AS7432
 
-DUET is a mouse controlled musical creature. Movement on the left introduces bass progression, while movement on the right introduces a melody. By alternating between the two sides, you can bring the voices together and make the creature react!
+DUET is a mouse controlled musical creature. Movement on the left introduces bass progression, while movement on the right introduces a melody. By alternating between the two sides, you can make the creature react!
 
 ## How to play
 
-Open the instrument in a large desktop browser window. Click once to enable audio, then move your mouse or trackpad to build energy. The creature will be inanimate until you start moving.
+Click once to enable audio, then move your mouse or trackpad to build energy. The creature will be inanimate until you start moving.
 
 The controls use the left and right halves of the **whole window**. You can move anywhere within either half; you do not need to hover over or click the creature itself.
 
-| When you...                   | The sound...                                                           | The creature...                                                                                 |
+| When you                      | The sound                                                              | The creature                                                                                    |
 | ----------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | Click or tap to turn on audio | Starts the bass and melody from the beginning.                         | Continues responding to movement.                                                               |
 | Move on the left half         | Builds bass energy and brings the low chords into the mix.             | The bass body and inner outline grow and the inner outline rotates.                             |
@@ -23,7 +23,7 @@ The controls use the left and right halves of the **whole window**. You can move
 | Hold the pointer still        | Gradually fades into silence as energy drains.                         | Gradually shrinks toward its resting sizes, and the outlines slow down.                         |
 | Click or tap again            | Toggles the audio on or off                                            | The creature still responds to mouse movement, even with the audio turned off.                  |
 
-A useful first gesture is to build the chords on the left, sweep across to reveal the melody, then alternate sides to blend them. There are no keyboard controls.
+An example gesture would be to build the chords on the left, sweep across to reveal the melody, then alternate sides to blend the audio. There are no keyboard controls.
 
 ## Background colour
 

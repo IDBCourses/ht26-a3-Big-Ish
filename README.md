@@ -12,7 +12,7 @@ DUET is a mouse controlled musical creature. Movement on the left introduces bas
 
 Click once to enable audio, then move your mouse or trackpad to build energy. The creature will be inanimate until you start moving.
 
-The controls use the left and right halves of the **whole window**. You can move anywhere within either half; you do not need to hover over or click the creature itself.
+The controls use the left and right halves of the **whole window**. You can move anywhere within either half. You do not need to hover over or click the creature itself.
 
 | When you                      | The sound                                                              | The creature                                                                                    |
 | ----------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -66,10 +66,6 @@ Both `update()` and `use()` repeat approximately every 25 milliseconds. Musical 
 | `index.html` | Loads the stylesheet, Tone.js and the instrument script.                                     |
 
 The project uses vanilla JavaScript, HTML, CSS, Tone.js and the supplied `shape.js`.
-
-## Layout limitation
-
-The prototype is designed for a mouse or trackpad in a large desktop window. Shape positions are calculated from the window dimensions when the page loads, while their sizes use pixel values. The layout does not automatically adjust after resizing. Choose the window size before loading, and refresh after changing it.
 
 ## References
 

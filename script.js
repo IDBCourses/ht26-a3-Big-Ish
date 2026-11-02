@@ -95,20 +95,20 @@ function duetShape() {
     outline.setRotation(45);
   });
   outsideOutline.setSize(650);
-  outsideOutline.setPosition(0.25, 0.19);
+  outsideOutline.setPosition(0.43 - 325 / window.innerWidth, 0.517 - 325 / window.innerHeight);
   outsideOutline.setColour(200, 50, 35, 0.5);
 
   insideOutline.setSize(525);
-  insideOutline.setPosition(0.285, 0.25);
+  insideOutline.setPosition(0.43 - 262 / window.innerWidth, 0.517 - 265 / window.innerHeight);
   insideOutline.setColour(12, 60, 82, 1);
 
   bassShape.setSize(300, 180);
-  bassShape.setPosition(0.325, 0.45);
+  bassShape.setPosition(0.43 - 190 / window.innerWidth, 0.517 - 67 / window.innerHeight);
   bassShape.setRoundedness(0.25);
   bassShape.setColour(12, 100, 60, 0.75);
 
   highShape.setSize(150, 300);
-  highShape.setPosition(0.42, 0.35);
+  highShape.setPosition(0.43 - 18 / window.innerWidth, 0.517 - 166 / window.innerHeight);
   highShape.setRoundedness(0.2);
   highShape.setColour(200, 100, 35, 0.75);
 
@@ -117,19 +117,19 @@ function duetShape() {
     eye.setColour(220, 25, 15, 1);
     eye.setRoundedness(1);
   });
-  eyeLeft.setPosition(0.43, 0.5);
-  eyeRight.setPosition(0.6, 0.5);
+  eyeLeft.setPosition(0.43, 0.517 - 17 / window.innerHeight);
+  eyeRight.setPosition(0.43 + 307 / window.innerWidth, 0.517 - 17 / window.innerHeight);
 
   eyeBling.forEach(function (bling) {
     bling.setSize(0);
     bling.setRoundedness(1);
     bling.setColour(0, 0, 95, 1);
   });
-  eyeLeftBling.setPosition(0.455, 0.51);
-  eyeRightBling.setPosition(0.625, 0.51);
+  eyeLeftBling.setPosition(0.43 + 45 / window.innerWidth, 0.517 - 7 / window.innerHeight);
+  eyeRightBling.setPosition(0.43 + 352 / window.innerWidth, 0.517 - 7 / window.innerHeight);
 
   mouthShape.setSize(75, 10);
-  mouthShape.setPosition(0.53, 0.58);
+  mouthShape.setPosition(0.43 + 180 / window.innerWidth, 0.517 + 63 / window.innerHeight);
   mouthShape.setColour(220, 25, 15, 1);
   mouthShape.setRoundedness(0.4);
 }

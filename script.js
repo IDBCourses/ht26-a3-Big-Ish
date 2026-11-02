@@ -235,8 +235,8 @@ function update() {
   setTimeout(update, 25);
 
   // Adjusting energy relative to pointer movement:
-  bassEnergy -= 2.5;
-  highEnergy -= 2.5;
+  bassEnergy -= 3;
+  highEnergy -= 3;
   if (bassEnergy < 0) {
     bassEnergy = 0;
   }
@@ -251,7 +251,7 @@ function use() {
 
   // Adusting shape sizes according to the energy:
   bassShape.setSize(300 + bassEnergy / 10, 180 + bassEnergy / 20);
-  highShape.setSize(150 + highEnergy / 40, 300 + highEnergy / 15);
+  highShape.setSize(150 + highEnergy / 20, 300 + highEnergy / 20);
 
   let eyeEnergy = bassEnergy / 25 + highEnergy / 25;
   eyes.forEach(function (eye) {
@@ -265,10 +265,10 @@ function use() {
 
   mouthShape.setSize(75 + highEnergy / 50, 15 + bassEnergy / 50);
 
-  outsideOutline.setSize(650 + highEnergy / 10);
+  outsideOutline.setSize(650 + highEnergy / 7);
   outsideOutline.setRotation(outsideOutline.rotation + highEnergy / 70);
 
-  insideOutline.setSize(525 + bassEnergy / 10);
+  insideOutline.setSize(525 + bassEnergy / 7);
   insideOutline.setRotation(insideOutline.rotation - bassEnergy / 70);
 
   // Adjusting volume according to energy:

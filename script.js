@@ -96,20 +96,32 @@ function duetShape() {
   });
 
   outsideOutline.setSize(650);
-  outsideOutline.setPosition(0.2839, 0.2733);
+  outsideOutline.setPosition(
+    0.43 - 325 / window.innerWidth,
+    0.517 - 325 / window.innerHeight,
+  );
   outsideOutline.setColour(200, 50, 35, 0.5);
 
   insideOutline.setSize(525);
-  insideOutline.setPosition(0.3116, 0.318);
+  insideOutline.setPosition(
+    0.43 - 262 / window.innerWidth,
+    0.517 - 265 / window.innerHeight,
+  );
   insideOutline.setColour(12, 60, 82, 1);
 
   bassShape.setSize(300, 180);
-  bassShape.setPosition(0.3433, 0.4668);
+  bassShape.setPosition(
+    0.43 - 190 / window.innerWidth,
+    0.517 - 67 / window.innerHeight,
+  );
   bassShape.setRoundedness(0.25);
   bassShape.setColour(12, 100, 60, 0.75);
 
   highShape.setSize(150, 300);
-  highShape.setPosition(0.4185, 0.3924);
+  highShape.setPosition(
+    0.43 - 18 / window.innerWidth,
+    0.517 - 166 / window.innerHeight,
+  );
   highShape.setRoundedness(0.2);
   highShape.setColour(200, 100, 35, 0.75);
 
@@ -119,8 +131,11 @@ function duetShape() {
     eye.setRoundedness(1);
   });
 
-  eyeLeft.setPosition(0.4264, 0.504);
-  eyeRight.setPosition(0.5611, 0.504);
+  eyeLeft.setPosition(0.43, 0.517 - 17 / window.innerHeight);
+  eyeRight.setPosition(
+    0.43 + 307 / window.innerWidth,
+    0.517 - 17 / window.innerHeight,
+  );
 
   eyeBling.forEach(function (bling) {
     bling.setSize(0);
@@ -128,11 +143,20 @@ function duetShape() {
     bling.setColour(0, 0, 95, 1);
   });
 
-  eyeLeftBling.setPosition(0.4462, 0.5114);
-  eyeRightBling.setPosition(0.5809, 0.5114);
+  eyeLeftBling.setPosition(
+    0.43 + 45 / window.innerWidth,
+    0.517 - 7 / window.innerHeight,
+  );
+  eyeRightBling.setPosition(
+    0.43 + 352 / window.innerWidth,
+    0.517 - 7 / window.innerHeight,
+  );
 
   mouthShape.setSize(75, 10);
-  mouthShape.setPosition(0.5056, 0.5635);
+  mouthShape.setPosition(
+    0.43 + 180 / window.innerWidth,
+    0.517 + 63 / window.innerHeight,
+  );
   mouthShape.setColour(220, 25, 15, 1);
   mouthShape.setRoundedness(0.4);
 }
@@ -176,7 +200,7 @@ function changeBG() {
   let randomHue = Math.random() * 300; //Picks a random hue between 1 - 300
   const bgNow = Tone.now(); // Current time
   let bgEnergy = bassEnergy + highEnergy;
-  let bgGap = 2 - (bgEnergy / 2000) * 1.35; // Interval between 2s to 0.65s for background transition
+  let bgGap = 2 - (bgEnergy / 2000) * 1.5; // Interval between 2s to 0.65s for background transition
 
   if (bgEnergy <= 400) {
     document.body.style.backgroundColor = "hsl(350, 60%, 55%)";
@@ -251,7 +275,7 @@ function use() {
 
   // Adusting shape sizes according to the energy:
   bassShape.setSize(300 + bassEnergy / 10, 180 + bassEnergy / 20);
-  highShape.setSize(150 + highEnergy / 20, 300 + highEnergy / 20);
+  highShape.setSize(150 + highEnergy / 15, 300 + highEnergy / 15);
 
   let eyeEnergy = bassEnergy / 25 + highEnergy / 25;
   eyes.forEach(function (eye) {

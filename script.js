@@ -289,10 +289,10 @@ function use() {
 
   mouthShape.setSize(75 + highEnergy / 50, 15 + bassEnergy / 50);
 
-  outsideOutline.setSize(650 + highEnergy / 10);
+  outsideOutline.setSize(650 + highEnergy / 7);
   outsideOutline.setRotation(outsideOutline.rotation + highEnergy / 70);
 
-  insideOutline.setSize(525 + bassEnergy / 10);
+  insideOutline.setSize(525 + bassEnergy / 7);
   insideOutline.setRotation(insideOutline.rotation - bassEnergy / 70);
 
   // Adjusting volume according to energy:

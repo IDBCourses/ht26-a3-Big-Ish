@@ -274,8 +274,8 @@ function use() {
   setTimeout(use, 25); // Updated every 25ms
 
   // Adusting shape sizes according to the energy:
-  bassShape.setSize(300 + bassEnergy / 10, 180 + bassEnergy / 20);
-  highShape.setSize(150 + highEnergy / 15, 300 + highEnergy / 15);
+  bassShape.setSize(300 + bassEnergy / 10, 180 + bassEnergy / 10);
+  highShape.setSize(150 + highEnergy / 10, 300 + highEnergy / 10);
 
   let eyeEnergy = bassEnergy / 25 + highEnergy / 25;
   eyes.forEach(function (eye) {
